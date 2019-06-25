@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?><database>
+    <element label="NETAUTO Configuration" max_length="40" name="x_328385_netauto_netauto_configuration" type="collection">
+        <element label="Key" max_length="40" name="key" type="string"/>
+        <element label="Value" max_length="40" name="value" type="string"/>
+    </element>
+</database>

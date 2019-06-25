@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_script_include">
+    <sys_script_include action="INSERT_OR_UPDATE">
+        <access>package_private</access>
+        <active>true</active>
+        <api_name>x_328385_netauto.NETAPI</api_name>
+        <client_callable>false</client_callable>
+        <description/>
+        <name>NETAPI</name>
+        <script><![CDATA[var NETAPI = Class.create();
+NETAPI.prototype = {
+    initialize: function() {
+		this.util = new NETUtil();
+		this.tableName = this.util.getTableNames("stores");
+		this.msgPrefix = this.util.getLogPrefix();
+    },
+	
+	getStores: function(request, response) {
+		try {
+			var gr = new GlideRecordSecure(this.tableName);
+			gr.addNotNullQuery("x_devinstance_location_id");
+			gr.addQuery("x_devinstance_active", "true");
+			gr.orderBy("x_devinstance_location_name");
+			
+			var storeArray = [];
+			
+			while (gr.next()) {
+				storeArray.push({
+					"name": gr.name + "",
+					"location_id": gr.x_devinstance_location_id + "",
+					"status": gr.x_devinstance_active + "",
+					"city": gr.city + "",
+					"state": gr.state + "",
+					"zip_code": gr.zip_code,
+				});
+			}
+			
+			// set the response
+			response.setStatus(200);
+			response.setContentType("application/json");
+			
+			// log activity
+			gs.log(this.msgPrefix + " REST API fetched " + storeArray.length + " stores from the database");
+			
+			// return response
+			return response.setBody(storeArray);
+		}
+		catch (ex) {
+			var msg = ex.message;
+			gs.log(this.msgPrefix + " ERROR :: " + msg);
+		}
+	},
+
+    type: 'NETAPI'
+};]]></script>
+        <sys_class_name>sys_script_include</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2019-06-21 15:21:39</sys_created_on>
+        <sys_id>bf1eefefdb867300346ddde74896190d</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>NETAPI</sys_name>
+        <sys_package display_value="netauto" source="x_328385_netauto">941ba3efdb467300346ddde74896193a</sys_package>
+        <sys_policy>read</sys_policy>
+        <sys_scope display_value="netauto">941ba3efdb467300346ddde74896193a</sys_scope>
+        <sys_update_name>sys_script_include_bf1eefefdb867300346ddde74896190d</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2019-06-21 15:21:39</sys_updated_on>
+    </sys_script_include>
+</record_update>
